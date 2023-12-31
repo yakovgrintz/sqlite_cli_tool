@@ -10,3 +10,4 @@ clap = "4.4.12"
 crossterm = "0.27.0"
 ratatui = "0.25.0"
 rusqlite = { version = "0.30.0",features = ["bundled"] }
+tui = "0.19.0"

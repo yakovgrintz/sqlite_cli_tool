@@ -3,7 +3,14 @@ use clap::{Arg, Command};
 use rusqlite::{Connection, Result};
 use std::io::{self, Write};
 use std::path::Path;
+use crate::tui::metadata_ui;
 
+mod db_func {
+    pub(crate) mod metadata_func;
+}
+mod tui{
+    pub(crate) mod metadata_ui;
+}
 fn main() {
     let app = Command::new("SQLite CLI Tool")
         .version("0.1.0")
@@ -55,6 +62,7 @@ fn interactive_shell(mut connection: Connection) -> Result<()> {
         match trimmed_command {
             "exit" => break,
             "help" => print_help(),
+            "BROWSE" => metadata_ui::run_tui(&connection),
             _ => {
                 if trimmed_command.to_lowercase().starts_with("select") {
                     // Handle SELECT queries which expect results
@@ -90,5 +98,7 @@ fn print_help() {
     println!("Special Commands:");
     println!("  exit  : Exit the CLI");
     println!("  help  : Print this help message");
+    println!("  BROWSE : Launch the TUI to browse database tables and columns");
+
     // Add more special commands or instructions here as needed
 }
