@@ -1,4 +1,4 @@
-#![allow(unused_imports)]
+
 use clap::{Arg, Command};
 use rusqlite::{Connection, Result};
 use std::io::{self, Write};
@@ -50,7 +50,6 @@ fn connect_to_database(db_path: &str) -> Result<()> {
 
 fn interactive_shell(mut connection: Connection) -> Result<()> {
     println!("Enter SQL commands (type 'exit' to quit, 'help' for special commands):");
-
     loop {
         print!("sqliteCLI> ");
         io::stdout().flush().unwrap(); // Make sure 'sqlite>' prompt appears immediately
