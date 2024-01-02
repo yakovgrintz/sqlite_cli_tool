@@ -1,11 +1,10 @@
 use std::io;
 use std::io::Write;
-use crossterm::ExecutableCommand;
 use rusqlite::Connection;
 use crate::tui::metadata_ui;
 use crate::db_func::connect_to_db::connect_to_database;
 
-fn interactive_shell() {
+pub(crate) fn interactive_shell() {
     println!("Enter SQL commands (type 'exit' to quit, 'help' for special commands):");
     let mut connection: Option<Connection> = None;
 
@@ -68,17 +67,16 @@ fn interactive_shell() {
     }
 }
 
-fn connect_to_database(p0: &str) -> Result<Connection, rusqlite::Error> {
-    todo!()
-}
+
 
 
 fn print_help() {
     println!("Special Commands:");
     println!("  exit  : Exit the CLI");
     println!("  help  : Print this help message");
-    println!("  BROWSE : Launch the TUI to browse database tables and columns");
+    println!("  browse : Launch the TUI to browse database tables and columns");
+    println!("  connect : connect to data base. insert path like parameter ");
 
-    // Add more special commands or instructions here as needed
+
 }
 
