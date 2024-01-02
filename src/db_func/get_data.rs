@@ -1,5 +1,7 @@
 use rusqlite::Connection;
 pub(crate) fn get_head_table(conn:&Connection, table_name:&str)->rusqlite::Result<Vec<String>>{
+
+    todo!(after initialze get_data_from_table change code to call it and not execute itself);
     let sql = format!("SELECT * FROM {} LIMIT 5", table_name);
     let mut stmt = conn.prepare(&sql)?;
 
@@ -17,3 +19,5 @@ pub(crate) fn get_head_table(conn:&Connection, table_name:&str)->rusqlite::Resul
 
     Ok(data)
 }
+pub(crate) fn get_data_from_table(conn:&Connection, table_name:&str, limit : u64)->rusqlite::Result<Vec<String>>{
+todo!()}
