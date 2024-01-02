@@ -12,6 +12,8 @@ use tui::{
     style::Style,
     text::Text,
 };
+use std::{fs::OpenOptions, io::Write};
+use std::time::{Duration, Instant};
 
 struct AppState {
     selected_table_index: usize,
@@ -31,6 +33,16 @@ pub(crate) fn run_tui(connection: &Connection) {
     terminal::LeaveAlternateScreen
 ).expect("TODO: panic message");
     println!("Press q to exit from this mode");
+    let mut log_file = OpenOptions::new()
+        .create(true)
+        .write(true)
+        .append(true)
+        .open("tui_log.txt")
+        .expect("Unable to open log file");
+    let mut prev_key_code: Option<KeyCode> = None;
+    let mut last_keypress_time = Instant::now();
+
+
 
     loop {
         terminal.draw(|f| {
@@ -43,6 +55,11 @@ pub(crate) fn run_tui(connection: &Connection) {
 
             let tables: Vec<ListItem> = table_names.iter().enumerate().map(|(i, t)| {
                 let style = if i == app_state.selected_table_index {
+                    writeln!(
+                        log_file,
+                        "To render Current Index: {}, Current Table: {}",
+                        app_state.selected_table_index, &table_names[app_state.selected_table_index]
+                    ).expect("Unable to write to log file");
                     Style::default().add_modifier(tui::style::Modifier::REVERSED)
                 } else {
                     Style::default()
@@ -64,16 +81,37 @@ pub(crate) fn run_tui(connection: &Connection) {
             }
         }).unwrap();
 
+
         if let CEvent::Key(key) = event::read().unwrap() {
-            match key.code {
+            let current_key_code = key.code;
+            let now = Instant::now();
+
+            // Calculate the time elapsed since the last keypress.
+            let time_since_last_keypress = now.duration_since(last_keypress_time);
+            if time_since_last_keypress >= Duration::from_millis(100) {
+
+            // Compare the current key code to the previous key code.
+            //if Some(current_key_code) != prev_key_code {
+
+                match current_key_code  {
                 KeyCode::Up => {
                     if app_state.selected_table_index > 0 {
                         app_state.selected_table_index -= 1;
+                        writeln!(
+                            log_file,
+                            "Index decremented to: {} - {}",
+                            app_state.selected_table_index, table_names[app_state.selected_table_index]
+                        ).expect("Unable to write to log file");
                     }
                 }
                 KeyCode::Down => {
                     if app_state.selected_table_index < table_names.len() - 1 {
                         app_state.selected_table_index += 1;
+                        writeln!(
+                            log_file,
+                            "Index incremented to: {} - {}",
+                            app_state.selected_table_index, table_names[app_state.selected_table_index]
+                        ).expect("Unable to write to log file");
                     }
                 }
                 KeyCode::Char('q') => {
@@ -89,5 +127,7 @@ pub(crate) fn run_tui(connection: &Connection) {
                 _ => {}
             }
         }
+            last_keypress_time = now;
     }
-}
+            //prev_key_code = Some(key.code);}
+}}
