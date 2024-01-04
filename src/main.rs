@@ -2,18 +2,19 @@ mod db_func;
 mod tui;
 mod core;
 
-use clap::{Arg, Command};
+use clap::{Arg, Command, Parser};
 use std::io::{Write};
 use crate::core::cli;
 use crate::core::commands::handle_commands;
 use crate::db_func::db_manager::DbManager;use std::sync::{Arc, Mutex};
+use crate::core::cli::Cli;
 
 
 fn main() {
 
-    let matches = cli::build_cli().get_matches();
     let db_manager = Arc::new(Mutex::new(DbManager::new()));
-    handle_commands::handle_command(matches,db_manager);
+    let cli = Cli::parse();
+    handle_commands::handle_command(&cli,db_manager);
 
 
 }
