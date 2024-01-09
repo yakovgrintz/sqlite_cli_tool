@@ -12,6 +12,9 @@ impl DbManager {
         Self { conn: None }
     }
 
+
+
+
     pub fn connect(&mut self, db_path: &str) -> rusqlite::Result<()> {
         let path = Path::new(db_path);
 
@@ -40,4 +43,6 @@ impl DbManager {
                 Some("Database file already exists".to_string()),
             ))
         }
-    }}
+    }
+}
+

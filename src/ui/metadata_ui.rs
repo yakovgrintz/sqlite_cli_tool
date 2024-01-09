@@ -12,7 +12,6 @@ use tui::{
     style::Style,
     text::Text,
 };
-use std::{io::Write};
 use std::time::{Duration, Instant};
 
 struct AppState {

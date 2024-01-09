@@ -1,7 +1,7 @@
 use std::io;
 use std::io::Write;
 use rusqlite::Connection;
-use crate::tui::metadata_ui;
+use crate::ui::metadata_ui;
 use crate::db_func::connect_to_db::connect_to_database;
 
 pub(crate) fn interactive_shell() {

@@ -1,10 +1,6 @@
-use std::io;
-use std::io::Write;
-use std::sync::{Arc, Mutex};
-use clap::{Command, Arg, Parser, Subcommand};
-use crate::core::commands::handle_commands;
-use crate::core::commands::handle_commands::handle_command;
-use crate::db_func::db_manager::DbManager;
+
+use clap::{ Parser, Subcommand};
+
 
 #[derive(Parser)]
 #[clap(author = "Yakov Grintz", version = "0.1.0", about = "Interacts with SQLite databases")]
@@ -17,7 +13,7 @@ pub enum Commands {
     /// Show head of table
     Show {
         /// Name of the table to show
-        #[clap()]
+        #[arg()]
         table_name: String,
     },
     /// Browse the database
